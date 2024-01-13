@@ -16,7 +16,7 @@ const Input = ()=>{
         <li>React</li>
         <li>Tri Setianto</li>
         <li>2327250036</li>
-        <li><a href=""></a>MY Github</li>
+        <li><a href="https://github.com/3nol04/tugas/blob/main/App.jsx">MyGithub </a></li>
       </lu>
     </div>
   )
