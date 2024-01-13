@@ -57,7 +57,7 @@ useEffect(()=>{
 },[color])
 return(
   <div>
-    <button onClick={()=>clik("yellow","white")}>Change color</button>
+    <button onClick={()=>clik("yellow")}>Change color</button>
   </div>
 )
 }
