@@ -1,79 +1,82 @@
-import React,{useEffect,useState} from "react";
+import {useEffect, useState } from 'react'
+import axios from 'axios'
 
-const Input = ()=>{
-  const [nama,setNama]=useState('');
-    const handleSetNama=(event)=>{
-    setNama(event.target.value)
-    };
-    const Btn=()=>{
-        alert('hallo '+(nama))
+const RestApi =()=>{
+    const [dataApi,setDataApi]=useState([]);
+    const [categoryName ,setCategoriName]=useState('')
+
+  useEffect(()=>{
+
+  const apiCripto =async()=>{
+    const res = await axios.get('https://raw.githubusercontent.com/farizdotid/DAFTAR-API-LOKAL-INDONESIA/master/data/crypto/en.json')
+      setDataApi(res.data.apis); 
+      setCategoriName(res.data.categoryName);
     }
-  return(
-    <div>
-        <input type="text" value={nama} onChange={handleSetNama}/>
-        <button onClick={Btn} >Click here</button>
-      <lu>
-        <li>React</li>
-        <li>Tri Setianto</li>
-        <li>2327250036</li>
-        <li><a href="https://github.com/3nol04/tugas/blob/main/App.jsx">MyGithub </a></li>
-      </lu>
-    </div>
-  )
-}
-  const NameCard = (props)=>{
-    const umur = 2024 - props.lahir
 
-  return(
-    <div>
-        <h3> Name : {props.nama}</h3>
-        <h3> Umur : {umur} Tahun</h3>
-    </div>
-  );
-}
+    apiCripto();
 
-const Count=()=> {
-  const [count, setCount] = useState(0);
+  },[]);
+  return(
+  <div className=''>
+      <div className='  bg-sky-900 h-10 '>
+            <h1 className='text-2xl text-center text-blue-50 '>{categoryName}</h1>
+        </div>
+      <div className='w-full h-full bg-slate-500 text-lg'>
+      <ul>{dataApi.map(( apis , Index)=>(
+        <li key = {Index}>
+    <div className='text-1xl font-serif text-ellipsis'>
+            <p>Api Name: {apis.apiName} </p>
+              <p>documentationUrl: <a className='underline decoration-blue-950 text-blue-950' href={apis.documentationUrl} target='_blank ' rel='noopener noreferrer'>{apis.documentationUrl}</a></p>
+                <p> Developer name: {apis.developer.name}</p>
+              <p>ProvileUrl: {apis.developer.provileUrl? `${apis.developer.provileUrl}`:'Null'} </p>
+          <p>Status: {apis.status? 'Yes' :'NO'}</p>
+        </div>
+        <hr></hr>
+          </li> ))}
+      </ul>
+    </div>
+  </div>
+);
+};
+function App(){ 
+  const [datas, setDatas] = useState([]);
+  const [categoryName ,setCategoriName]=useState('');
+    const apiUrl =
+      "https://raw.githubusercontent.com/farizdotid/DAFTAR-API-LOKAL-INDONESIA/master/data/e-commerce/id.json";
+  const fetchData = async () => {
+    const res = await axios.get(apiUrl);
+    return res.data;
+  };
+
   useEffect(() => {
-    document.title=`${count} count`;
-  },[count]);
-
+    fetchData().then((res) => {
+      setDatas(res.apis);
+      setCategoriName(res.categoryName);
+    });
+  }, []);
   return (
     <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me {count}
-      </button>
+
+      <RestApi/>
+
+        <div className='h-10 bg-sky-900 text-center text-2xl text-blue-100'>
+          <h1 className=''>{categoryName}</h1>
+            </div>
+      {datas.length && datas.map((data, index) => {
+        return (
+          <div key = {index}>
+            <div className=' text-ellipsis font-serif lg:text-lg bg-slate-500 w-100px sm:text-wrap w-full' >
+              <p>nama api : {data.apiName}</p>
+                <p>status : {data.status ? "true" : "false"} </p>
+                    <p>documentationUrl :<a className="text-blue-950 underline decoration-blue-950" href= {data.documentationUrl}  target='_blank' rel='noopener noreferrner'>{data.documentationUrl}</a></p>
+                  <p> Developer :{data.developer.name}</p>
+                <p>Provile : {data.developer.provileUrl ? `${data.developer.provileUrl}` : "Kosong"}</p>
+            </div>
+          <hr/>
+            </div>
+          );
+        })}
     </div>
   );
-}
-const Clr = ()=>{
-const [color,setColor]=useState("blue");
-const clik = color =>{
-  setColor(color)
-}
-useEffect(()=>{
-  document.body.style.backgroundColor = color
-},[color])
-return(
-  <div>
-    <button onClick={()=>clik("yellow")}>Change color</button>
-  </div>
-)
-}
-
-const App=()=> {
-
-  return(
-    <div>
-      <h1>Quiz</h1>
-      <Count></Count>
-      <NameCard nama="M tri Setanto"lahir="2004"></NameCard>
-      <p>Hallo Nama saya M tri Setanto</p>
-      <Clr></Clr>
-      <Input></Input>
-    </div>
-  );
-}
-
+  }
 export default App
